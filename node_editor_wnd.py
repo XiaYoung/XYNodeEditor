@@ -1,15 +1,20 @@
 
 from PySide2.QtGui import QBrush, QColor, QPen
-from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QGraphicsItem, QPushButton, QTextEdit, QVBoxLayout, QWidget
+from PySide2.QtCore import QFile, Qt
+from PySide2.QtWidgets import QApplication, QGraphicsItem, QPushButton, QTextEdit, QVBoxLayout, QWidget
 
+from node_node import Node
 from node_scene import Scene
+from node_socket import Socket
 from node_graphics_view import QDMGraphicsView
 
 
 class NodeEditorWnd(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        self.stylesheet_filename = 'qss/nodestyle.qss'
+        self.loadStylesheet(self.stylesheet_filename)
 
         self.initUI()
 
@@ -21,17 +26,20 @@ class NodeEditorWnd(QWidget):
 
         # create graphics scene
         self.scene = Scene()
-        self.grScene = self.scene.grScence
+        # self.grScene = self.scene.grScence
+
+        node = Node(self.scene, "My new Nd",
+                    inputs=[1, 2, 3],
+                    outputs=[4])
 
         # create grphic view
-        self.view = QDMGraphicsView(self.grScene, self)
-
+        self.view = QDMGraphicsView(self.scene.grScene, self)
         self.layout.addWidget(self.view)
 
         self.setWindowTitle("Node Editor")
         self.show()
 
-        self.addDebugContent()
+        # self.addDebugContent()
 
     def addDebugContent(self):
         greenBrush = QBrush(Qt.green)
@@ -60,3 +68,10 @@ class NodeEditorWnd(QWidget):
         line = self.grScene.addLine(-200, -100, 400, 200, outlinePen)
         line.setFlag(QGraphicsItem.ItemIsMovable)
         line.setFlag(QGraphicsItem.ItemIsSelectable)
+
+    def loadStylesheet(self, filename):
+        print('STYLE loading:', filename)
+        file = QFile(filename)
+        file.open(QFile.ReadOnly | QFile.Text)
+        stylesheet = file.readAll()
+        QApplication.instance().setStyleSheet(str(stylesheet, encoding='utf-8'))
