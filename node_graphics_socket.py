@@ -4,12 +4,21 @@ from PySide2.QtWidgets import QGraphicsItem
 
 
 class QDMGraphicsSocket(QGraphicsItem):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
+    def __init__(self, socket, socket_type=1):
+        super().__init__(socket.node.grNode)
+        self.socket = socket
         self.radius = 6.0
         self.outline_width = 1.0
-        self._color_bacground = QColor("#FFFF7700")
+        self._colors = [
+            QColor("#FFFF7700"),
+            QColor("#FF52e220"),
+            QColor("#FF0056a6"),
+            QColor("#FFa86db1"),
+            QColor("#FFb54747"),
+            QColor("#FFdbe220")
+            ]
+
+        self._color_bacground = self._colors[socket_type]
         self._color_outline = QColor("#FF000000")
 
         self._pen = QPen(self._color_outline)

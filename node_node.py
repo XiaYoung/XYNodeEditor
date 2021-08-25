@@ -21,14 +21,24 @@ class Node():
 
         counter = 0
         for item in inputs:
-            socket = Socket(node=self, index=counter, position=LEFT_BOTTOM)
+            socket = Socket(node=self, index=counter, position=LEFT_BOTTOM, socket_type=item)
             counter += 1
             self.inputs.append(socket)
 
         counter = 0
         for item in outputs:
-            socket = Socket(node=self, index=counter, position=RIGHT_TOP)
+            socket = Socket(node=self, index=counter, position=RIGHT_TOP, socket_type=item)
             self.outputs.append(socket)
+
+    def __str__(self):
+        return "<Node %s..%s>" % (hex(id(self))[2:5], hex(id(self))[-3:])
+
+    @property
+    def pos(self):
+        return self.grNode.pos()   # QPointF
+
+    def setPos(self, x, y):
+        self.grNode.setPos(x, y)
 
     def getSocketPosition(self, index, position):
         x = 0 if position in [LEFT_TOP, LEFT_BOTTOM] else self.grNode.width
@@ -38,4 +48,10 @@ class Node():
         else:
             y = self.grNode.title_height + self.grNode._padding + self.grNode.edge_size + index * self.socket_spacing
 
-        return x, y
+        return [x, y]
+
+    def updateConnectedEdges(self):
+        for socket in self.inputs + self.outputs:
+            if socket.hasEdge():
+                for edge in socket.edges:
+                    edge.updatePositions()
