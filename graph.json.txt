@@ -1,0 +1,132 @@
+{
+    "id": 2191877176960,
+    "scene_width": 64000,
+    "scene_height": 64000,
+    "nodes": [
+        {
+            "id": 2191919562912,
+            "title": "My new Nd",
+            "pos_x": -320.0,
+            "pos_y": 38.0,
+            "inputs": [
+                {
+                    "id": 2191919728384,
+                    "index": 0,
+                    "position": 2,
+                    "socket_type": 0
+                },
+                {
+                    "id": 2191919728432,
+                    "index": 1,
+                    "position": 2,
+                    "socket_type": 2
+                },
+                {
+                    "id": 2191919728480,
+                    "index": 2,
+                    "position": 2,
+                    "socket_type": 3
+                }
+            ],
+            "outputs": [
+                {
+                    "id": 2191919728624,
+                    "index": 0,
+                    "position": 3,
+                    "socket_type": 4
+                }
+            ],
+            "content": {}
+        },
+        {
+            "id": 2191919562864,
+            "title": "My new Nd",
+            "pos_x": -86.0,
+            "pos_y": -227.0,
+            "inputs": [
+                {
+                    "id": 2191919728960,
+                    "index": 0,
+                    "position": 2,
+                    "socket_type": 5
+                },
+                {
+                    "id": 2191919729008,
+                    "index": 1,
+                    "position": 2,
+                    "socket_type": 2
+                },
+                {
+                    "id": 2191919729104,
+                    "index": 2,
+                    "position": 2,
+                    "socket_type": 4
+                }
+            ],
+            "outputs": [
+                {
+                    "id": 2191919729200,
+                    "index": 0,
+                    "position": 3,
+                    "socket_type": 4
+                }
+            ],
+            "content": {}
+        },
+        {
+            "id": 2191919563104,
+            "title": "My new Nd",
+            "pos_x": 157.0,
+            "pos_y": 38.0,
+            "inputs": [
+                {
+                    "id": 2191919729536,
+                    "index": 0,
+                    "position": 2,
+                    "socket_type": 1
+                },
+                {
+                    "id": 2191919729584,
+                    "index": 1,
+                    "position": 2,
+                    "socket_type": 5
+                },
+                {
+                    "id": 2191919729680,
+                    "index": 2,
+                    "position": 2,
+                    "socket_type": 3
+                }
+            ],
+            "outputs": [
+                {
+                    "id": 2191919729776,
+                    "index": 0,
+                    "position": 3,
+                    "socket_type": 5
+                }
+            ],
+            "content": {}
+        }
+    ],
+    "edges": [
+        {
+            "id": 2191919728912,
+            "edge_type": 2,
+            "start": 2191919728624,
+            "end": 2191919728960
+        },
+        {
+            "id": 2191919729488,
+            "edge_type": 2,
+            "start": 2191919729200,
+            "end": 2191919729536
+        },
+        {
+            "id": 2191919729968,
+            "edge_type": 2,
+            "start": 2191919728432,
+            "end": 2191919729776
+        }
+    ]
+}

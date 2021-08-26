@@ -1,6 +1,6 @@
 from PySide2.QtCore import QRectF, Qt
 from PySide2.QtGui import QBrush, QColor, QFont, QPainterPath, QPen
-from PySide2.QtWidgets import QGraphicsItem, QGraphicsProxyWidget, QGraphicsSceneMouseEvent, QGraphicsTextItem
+from PySide2.QtWidgets import QGraphicsItem, QGraphicsProxyWidget, QGraphicsTextItem
 
 
 class QDMGraphicsNode(QGraphicsItem):
@@ -39,7 +39,7 @@ class QDMGraphicsNode(QGraphicsItem):
     def mouseMoveEvent(self, event):
         super().mouseMoveEvent(event)
 
-        # optimize me! just update the selecetd nodes 
+        # optimize me! just update the selecetd nodes
         for node in self.scene().scene.nodes:
             if node.grNode.isSelected():
                 node.updateConnectedEdges()
