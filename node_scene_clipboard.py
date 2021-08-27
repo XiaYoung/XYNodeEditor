@@ -55,7 +55,7 @@ class SceneClipboard():
         if delete:
             self.scene.grScene.views()[0].deleteSelectd()
             # store our history
-            self.scene.hitory.storeHistory("Cut out element from scene")
+            self.scene.hitory.storeHistory("Cut out element from scene", setModified=True)
 
         return data
 
@@ -102,4 +102,4 @@ class SceneClipboard():
                 new_edge.deserialize(edge_data, hashmap, restore_id=False)
 
         # store history
-        self.scene.history.storeHistory("Pasted items in scene")
+        self.scene.history.storeHistory("Pasted items in scene", setModified=True)

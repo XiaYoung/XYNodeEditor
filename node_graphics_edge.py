@@ -15,7 +15,7 @@ class QDMGraphicsEdge(QGraphicsPathItem):
 
         self.edge = edge
 
-        self._color = QColor("#001000")  # 多一位都不显示 #00100000 错误
+        self._color = QColor("#0f0f0f")  # 多一位都不显示 #00100000 错误
         self._pen = QPen(self._color)
         self._pen.setWidthF(2.0)
 
@@ -40,11 +40,11 @@ class QDMGraphicsEdge(QGraphicsPathItem):
     def setDestination(self, x, y):
         self.posDestination = [x, y]
 
-    # def boundingRect(self):
-    #     return self.shape().boundingRect()
+    def boundingRect(self):
+        return self.shape().boundingRect()
 
-    # def shape(self):
-    #     return self.calcPath()
+    def shape(self):
+        return self.calcPath()
 
     def paint(self, painter: QPainter, option, widget=None):
         self.setPath(self.calcPath())
@@ -86,14 +86,15 @@ class QDMGraphicsEdgeBezier(QDMGraphicsEdge):
         cpy_s = 0
         cpy_d = 0
 
-        sspos = self.edge.start_socket.position
+        if self.edge.start_socket is not None:
+            sspos = self.edge.start_socket.position
 
-        if (s[0] > d[0] and sspos in (RIGHT_TOP, RIGHT_BOTTOM)) or (s[0] < d[0] and sspos in (LEFT_TOP, LEFT_BOTTOM)):
-            cpx_d *= -1
-            cpx_s *= -1
+            if (s[0] > d[0] and sspos in (RIGHT_TOP, RIGHT_BOTTOM)) or (s[0] < d[0] and sspos in (LEFT_TOP, LEFT_BOTTOM)):
+                cpx_d *= -1
+                cpx_s *= -1
 
-            cpy_d = ((s[1] - d[1]) / math.fabs((s[1] - d[1]) if (s[1] - d[1]) != 0 else 0.000001)) * EDGE_CP_ROUNDNESS
-            cpy_s = ((d[1] - s[1]) / math.fabs((d[1] - s[1]) if (d[1] - s[1]) != 0 else 0.000001)) * EDGE_CP_ROUNDNESS
+                cpy_d = ((s[1] - d[1]) / math.fabs((s[1] - d[1]) if (s[1] - d[1]) != 0 else 0.000001)) * EDGE_CP_ROUNDNESS
+                cpy_s = ((d[1] - s[1]) / math.fabs((d[1] - s[1]) if (d[1] - s[1]) != 0 else 0.000001)) * EDGE_CP_ROUNDNESS
 
         path = QPainterPath(QPointF(self.posSource[0], self.posSource[1]))
         path.cubicTo(s[0] + cpx_s, s[1] + cpy_s,

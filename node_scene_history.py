@@ -1,7 +1,7 @@
 from node_graphics_edge import QDMGraphicsEdge
 
 
-DEBUG = True
+DEBUG = False
 
 
 class SceneHistory():
@@ -32,7 +32,9 @@ class SceneHistory():
                   "(%d)" % len(self.history_stack))
         self.restoreHistoryStamp(self.history_stack[self.history_current_step])
 
-    def storeHistory(self, desc):
+    def storeHistory(self, desc,setModified=False):
+        if setModified:
+            self.scene.has_been_modified = True
         if DEBUG:
             print("Storing history", '"%s"' % desc,
                   "... current_step: @%d" % self.history_current_step,

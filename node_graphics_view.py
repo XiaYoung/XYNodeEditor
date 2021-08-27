@@ -235,7 +235,7 @@ class QDMGraphicsView(QGraphicsView):
             for edge in self.grScene.scene.edges:
                 if edge.grEdge.intersectsWith(p1, p2):
                     edge.remove()
-        self.grScene.scene.history.storeHistory("Delete cutted edges")
+        self.grScene.scene.history.storeHistory("Delete cutted edges", setModified=True)
 
     def deleteSelected(self):
         for item in self.grScene.selectedItems():
@@ -243,7 +243,7 @@ class QDMGraphicsView(QGraphicsView):
                 item.edge.remove()
             elif hasattr(item, 'node'):
                 item.node.remove()
-        self.grScene.scene.history.storeHistory("Delete selected")
+        self.grScene.scene.history.storeHistory("Delete selected", setModified=True)
 
     def debug_modifiers(self, event):
         out = "MODS: "
@@ -293,7 +293,7 @@ class QDMGraphicsView(QGraphicsView):
             if DEBUG:
                 print("View::edgeDragEnd ~  assign End socket to:", item.socket)
                 print("View::edgeDragEnd ~ End dargging edge")
-            self.grScene.scene.history.storeHistory("Created new edge by dargging")
+            self.grScene.scene.history.storeHistory("Created new edge by dargging", setModified=True)
         else:
             self.mode = MODE_NOOP
             if DEBUG:
