@@ -1,4 +1,3 @@
-
 from PySide2.QtGui import QBrush, QColor, QPen
 from PySide2.QtCore import QFile, Qt
 from PySide2.QtWidgets import QApplication, QGraphicsItem, QPushButton, QTextEdit, QVBoxLayout, QWidget
@@ -9,7 +8,7 @@ from node_edge import EDGE_TYPE_BEZIER, EDGE_TYPE_DIRECT, Edge
 from node_graphics_view import QDMGraphicsView
 
 
-class NodeEditorWnd(QWidget):
+class NodeEditorWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -19,7 +18,6 @@ class NodeEditorWnd(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.setGeometry(200, 200, 800, 600)
         self.layout = QVBoxLayout()
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(self.layout)
@@ -33,9 +31,6 @@ class NodeEditorWnd(QWidget):
         # create grphic view
         self.view = QDMGraphicsView(self.scene.grScene, self)
         self.layout.addWidget(self.view)
-
-        self.setWindowTitle("Node Editor")
-        self.show()
 
         # self.addDebugContent()
 
@@ -56,6 +51,7 @@ class NodeEditorWnd(QWidget):
 
         edge1 = Edge(self.scene, node1.outputs[0], node2.inputs[0], edge_type=EDGE_TYPE_BEZIER)
         edge2 = Edge(self.scene, node2.outputs[0], node3.inputs[0], edge_type=EDGE_TYPE_BEZIER)
+        self.scene.history.storeHistory("Init add nodes")
 
     def addDebugContent(self):
         greenBrush = QBrush(Qt.green)

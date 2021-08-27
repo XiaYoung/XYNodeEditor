@@ -40,6 +40,12 @@ class QDMGraphicsEdge(QGraphicsPathItem):
     def setDestination(self, x, y):
         self.posDestination = [x, y]
 
+    # def boundingRect(self):
+    #     return self.shape().boundingRect()
+
+    # def shape(self):
+    #     return self.calcPath()
+
     def paint(self, painter: QPainter, option, widget=None):
         self.setPath(self.calcPath())
 
