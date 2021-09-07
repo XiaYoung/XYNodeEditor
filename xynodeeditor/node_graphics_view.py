@@ -1,11 +1,11 @@
-from node_graphics_cutline import QDMCutLine
 from PySide2.QtCore import QEvent, Qt, Signal
 from PySide2.QtGui import QKeyEvent, QMouseEvent, QPainter
 from PySide2.QtWidgets import QApplication, QGraphicsView
 
-from node_edge import EDGE_TYPE_BEZIER, Edge
-from node_graphics_edge import QDMGraphicsEdge
-from node_graphics_socket import QDMGraphicsSocket
+from xynodeeditor.node_graphics_cutline import QDMCutLine
+from xynodeeditor.node_edge import EDGE_TYPE_BEZIER, Edge
+from xynodeeditor.node_graphics_edge import QDMGraphicsEdge
+from xynodeeditor.node_graphics_socket import QDMGraphicsSocket
 
 MODE_NOOP = 1
 MODE_EDGE_DRAG = 2
@@ -187,8 +187,8 @@ class QDMGraphicsView(QGraphicsView):
     def mouseMoveEvent(self, event):
         if self.mode == MODE_EDGE_DRAG:
             pos = self.mapToScene(event.pos())
-            self.dragEdge.grEdge.setDestination(pos.x(), pos.y())
-            self.dragEdge.grEdge.update()
+            self.drag_edge.grEdge.setDestination(pos.x(), pos.y())
+            self.drag_edge.grEdge.update()
         if self.mode == MODE_EDGE_CUT:
             pos = self.mapToScene(event.pos())
             self.cutline.line_points.append(pos)
@@ -264,42 +264,56 @@ class QDMGraphicsView(QGraphicsView):
         if DEBUG:
             print("View::edgeDragStart ~ Start dragging edge")
         self.mode = MODE_EDGE_DRAG
-        self.dragEdge = Edge(self.grScene.scene, item.socket, None, EDGE_TYPE_BEZIER)
+        # drag_edge 在非multi_edges模式下需要删掉
+        self.drag_edge = Edge(self.grScene.scene, item.socket, None, EDGE_TYPE_BEZIER)
+        self.drag_start_socket = item.socket
         if DEBUG:
-            print("View::edgeDragStart ~ dragEdge:", self.dragEdge)
+            print("View::edgeDragStart ~ dragEdge:", self.drag_edge)
             print("View::edgeDragStart ~   assign Start Socket to:", item.socket)
 
     def edgeDragEnd(self, item):
 
         if type(item) is QDMGraphicsSocket:
             # check if start and end are same socket
-            if item.socket == self.dragEdge.start_socket:
+            if item.socket == self.drag_edge.start_socket:
                 if DEBUG:
                     print("View::edgeDragEnd ~  Start and End are same!")
                 return True
 
             # check if already have a same edge
-            other_edges = self.dragEdge.start_socket.edges
+            other_edges = self.drag_edge.start_socket.edges
             for edge in other_edges:
                 if edge.end_socket == item.socket:
                     if DEBUG:
                         print("View::edgeDragEnd ~  already have a same edge")
                     return True
 
+            if not self.drag_edge.start_socket.is_multi_edges:
+                self.drag_edge.start_socket.removeAllEdges()
+
+            if not item.socket.is_multi_edges:
+                item.socket.removeAllEdges()
+
             self.mode = MODE_NOOP
-            self.dragEdge.end_socket = item.socket
-            self.dragEdge.end_socket.setConnectedEdge(self.dragEdge)
-            self.dragEdge.updatePositions()
+            # self.drag_edge.end_socket = item.socket
+            # self.drag_edge.end_socket.addEdge(self.drag_edge)
+            # self.drag_edge.start_socket = self.drag_start_socket
+            # self.drag_edge.start_socket.addEdge(self.drag_edg)
+
+            Edge(self.grScene.scene, self.drag_start_socket, item.socket, EDGE_TYPE_BEZIER)
+            # self.drag_edge.updatePositions()
+
             if DEBUG:
                 print("View::edgeDragEnd ~  assign End socket to:", item.socket)
                 print("View::edgeDragEnd ~ End dargging edge")
             self.grScene.scene.history.storeHistory("Created new edge by dargging", setModified=True)
+
         else:
             self.mode = MODE_NOOP
             if DEBUG:
                 print("View::edgeDragEnd ~  NOT assign End socket")
-            self.dragEdge.remove()
-            self.dragEdge = None
+            self.drag_edge.remove()
+            self.drag_edge = None
             if DEBUG:
                 print("View::edgeDragEnd ~  Remove Darg Edge")
                 print("View::edgeDragEnd ~ End dargging edge")

@@ -1,6 +1,6 @@
 from collections import OrderedDict
-from node_serializable import Serializable
-from node_graphics_edge import QDMGraphicsEdgeDirect, QDMGraphicsEdgeBezier
+from xynodeeditor.node_serializable import Serializable
+from xynodeeditor.node_graphics_edge import QDMGraphicsEdgeDirect, QDMGraphicsEdgeBezier
 
 EDGE_TYPE_DIRECT = 1
 EDGE_TYPE_BEZIER = 2
@@ -12,6 +12,10 @@ class Edge(Serializable):
     def __init__(self, scene, start_socket=None, end_socket=None, edge_type=EDGE_TYPE_DIRECT):
         super().__init__()
         self.scene = scene
+
+        # default init
+        self._start_socket = None
+        self._end_socket = None
 
         self.start_socket = start_socket
         self.end_socket = end_socket
@@ -28,9 +32,15 @@ class Edge(Serializable):
 
     @start_socket.setter
     def start_socket(self, value):
+        # if we were assigned to some socket before, delete us from the socket
+        if self._start_socket is not None:
+            self._start_socket.removeEdge(self)
+
+        # assign new start socket
         self._start_socket = value
+        # addEdge to the socket class
         if self.start_socket is not None:
-            self.start_socket.edges.append(self)
+            self.start_socket.addEdge(self)
 
     @property
     def end_socket(self):
@@ -38,9 +48,15 @@ class Edge(Serializable):
 
     @end_socket.setter
     def end_socket(self, value):
+        # if we were assigned to some socket before, delete us from the socket
+        if self._end_socket is not None:
+            self._end_socket.removeEdge(self)
+
+        # assign new end socket
         self._end_socket = value
+        # addEdge to the socket class
         if self.end_socket is not None:
-            self.end_socket.edges.append(self)
+            self.end_socket.addEdge(self)
 
     @property
     def edge_type(self):
@@ -80,10 +96,10 @@ class Edge(Serializable):
         self.grEdge.update()
 
     def remove_from_sockets(self):
-        if self.start_socket is not None:
-            self.start_socket.edges.remove(self)
-        if self.end_socket is not None:
-            self.end_socket.edges.remove(self)
+        # if self.start_socket is not None:
+        #     self.start_socket.removeEdge(self)
+        # if self.end_socket is not None:
+        #     self.end_socket.removeEdge(self)
         self.start_socket = None
         self.end_socket = None
 

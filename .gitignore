@@ -127,3 +127,34 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+_template/.editorconfig
+_template/.gitignore
+_template/.travis.yml
+_template/AUTHORS.rst
+_template/CONTRIBUTING.rst
+_template/HISTORY.rst
+_template/LICENSE
+_template/Makefile
+_template/MANIFEST.in
+_template/README.rst
+_template/requirements_dev.txt
+_template/setup.cfg
+_template/setup.py
+_template/tox.ini
+_template/.github/ISSUE_TEMPLATE.md
+_template/docs/authors.rst
+_template/docs/conf.py
+_template/docs/contributing.rst
+_template/docs/history.rst
+_template/docs/index.rst
+_template/docs/installation.rst
+_template/docs/make.bat
+_template/docs/Makefile
+_template/docs/readme.rst
+_template/docs/usage.rst
+_template/template/__init__.py
+_template/template/template.py
+_template/tests/__init__.py
+_template/tests/test_template.py
+.vscode/launch.json
+.vscode/settings.json

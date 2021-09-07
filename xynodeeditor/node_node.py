@@ -1,8 +1,8 @@
 from collections import OrderedDict
-from node_serializable import Serializable
-from node_socket import LEFT_BOTTOM, LEFT_TOP, RIGHT_BOTTOM, RIGHT_TOP, Socket
-from node_content_widget import QDMNodeContentWidget
-from node_graphics_node import QDMGraphicsNode
+from xynodeeditor.node_serializable import Serializable
+from xynodeeditor.node_socket import LEFT_BOTTOM, LEFT_TOP, RIGHT_BOTTOM, RIGHT_TOP, Socket
+from xynodeeditor.node_content_widget import QDMNodeContentWidget
+from xynodeeditor.node_graphics_node import QDMGraphicsNode
 
 DEBUG = False
 
@@ -27,13 +27,13 @@ class Node(Serializable):
 
         counter = 0
         for item in inputs:
-            socket = Socket(node=self, index=counter, position=LEFT_BOTTOM, socket_type=item)
+            socket = Socket(node=self, index=counter, position=LEFT_BOTTOM, socket_type=item, multi_edges=False)
             counter += 1
             self.inputs.append(socket)
 
         counter = 0
         for item in outputs:
-            socket = Socket(node=self, index=counter, position=RIGHT_TOP, socket_type=item)
+            socket = Socket(node=self, index=counter, position=RIGHT_TOP, socket_type=item, multi_edges=False)
             self.outputs.append(socket)
 
     def __str__(self):
@@ -67,7 +67,7 @@ class Node(Serializable):
 
     def updateConnectedEdges(self):
         for socket in self.inputs + self.outputs:
-            if socket.hasEdge():
+            if socket.edges:
                 for edge in socket.edges:
                     edge.updatePositions()
 
@@ -77,7 +77,7 @@ class Node(Serializable):
         if DEBUG:
             print(" - remove all edge from sockets")
         for socket in (self.inputs + self.outputs):
-            if socket.hasEdge():
+            if socket.edges:
                 if DEBUG:
                     print("  - removing from socket:", socket)
                 for edge in socket.edges:

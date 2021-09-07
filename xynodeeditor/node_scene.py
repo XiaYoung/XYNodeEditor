@@ -1,11 +1,11 @@
 import json
 from collections import OrderedDict
-from node_scene_clipboard import SceneClipboard
-from node_serializable import Serializable
-from node_graphics_scene import QDMGraphicsScene
-from node_node import Node
-from node_edge import Edge
-from node_scene_history import SceneHistory
+from xynodeeditor.node_scene_clipboard import SceneClipboard
+from xynodeeditor.node_serializable import Serializable
+from xynodeeditor.node_graphics_scene import QDMGraphicsScene
+from xynodeeditor.node_node import Node
+from xynodeeditor.node_edge import Edge
+from xynodeeditor.node_scene_history import SceneHistory
 
 
 class Scene(Serializable):
@@ -53,11 +53,15 @@ class Scene(Serializable):
     def removeNode(self, node):
         if node in self.nodes:
             self.nodes.remove(node)
+        else:
+            print("!W:", "Scene::removeNode", node, "is not in the list")
 
     def removeEdge(self, edge):
         # 防止重复删除
         if edge in self.edges:
             self.edges.remove(edge)
+        else:
+            print("!W:", "Scene::removeEdge", edge, "is not in the list")
 
     def clear(self):
         while len(self.nodes) > 0:

@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from node_serializable import Serializable
+from xynodeeditor.node_serializable import Serializable
 from PySide2.QtWidgets import QLabel, QTextEdit, QVBoxLayout, QWidget
 
 

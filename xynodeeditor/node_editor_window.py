@@ -1,6 +1,6 @@
 import os
 import json
-from node_editor_widget import NodeEditorWidget
+from xynodeeditor.node_editor_widget import NodeEditorWidget
 from PySide2.QtWidgets import QAction, QApplication, QFileDialog, QLabel, QMainWindow, QMessageBox
 
 

@@ -2,17 +2,17 @@ from PySide2.QtGui import QBrush, QColor, QPen
 from PySide2.QtCore import QFile, Qt
 from PySide2.QtWidgets import QApplication, QGraphicsItem, QPushButton, QTextEdit, QVBoxLayout, QWidget
 
-from node_node import Node
-from node_scene import Scene
-from node_edge import EDGE_TYPE_BEZIER, EDGE_TYPE_DIRECT, Edge
-from node_graphics_view import QDMGraphicsView
+from xynodeeditor.node_node import Node
+from xynodeeditor.node_scene import Scene
+from xynodeeditor.node_edge import EDGE_TYPE_BEZIER, EDGE_TYPE_DIRECT, Edge
+from xynodeeditor.node_graphics_view import QDMGraphicsView
 
 
 class NodeEditorWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.stylesheet_filename = 'qss/nodestyle.qss'
+        self.stylesheet_filename = 'xynodeeditor/qss/nodestyle.qss'
         self.loadStylesheet(self.stylesheet_filename)
 
         self.initUI()

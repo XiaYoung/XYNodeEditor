@@ -4,7 +4,7 @@ from PySide2.QtCore import QPointF, Qt
 from PySide2.QtGui import QColor, QPainter, QPainterPath, QPen
 from PySide2.QtWidgets import QGraphicsPathItem
 
-from node_socket import LEFT_BOTTOM, LEFT_TOP, RIGHT_BOTTOM, RIGHT_TOP
+from xynodeeditor.node_socket import LEFT_BOTTOM, LEFT_TOP, RIGHT_BOTTOM, RIGHT_TOP
 
 EDGE_CP_ROUNDNESS = 100
 

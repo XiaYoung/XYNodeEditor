@@ -1,9 +1,9 @@
 from collections import OrderedDict
-from node_graphics_edge import QDMGraphicsEdge
-from node_node import Node
-from node_edge import Edge
+from xynodeeditor.node_graphics_edge import QDMGraphicsEdge
+from xynodeeditor.node_node import Node
+from xynodeeditor.node_edge import Edge
 
-DEBUG = True
+DEBUG = False
 
 
 class SceneClipboard():
