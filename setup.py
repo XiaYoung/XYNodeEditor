@@ -7,12 +7,11 @@ from setuptools import setup, find_packages
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
-# TODO:TOX 找不到这两个文件
-# with open('HISTORY.rst') as history_file:
-#     history = history_file.read()
+with open('HISTORY.rst') as history_file:
+    history = history_file.read()
 
-# with open('requirements.txt') as requirements_file:
-#     requirements = requirements_file.read()
+with open('requirements.txt') as requirements_file:
+    requirements = requirements_file.read()
 
 requirements = []
 
@@ -32,8 +31,7 @@ setup(
     description="Python Boilerplate contains all the boilerplate you need to create a Python package.",
     install_requires=requirements,
     license="MIT license",
-    # TODO:TOX 找不到这两个文件
-    # long_description=readme + '\n\n' + history,
+    long_description=readme + '\n\n' + history,
     include_package_data=True,
     keywords='xynodeeditor',
     name='xynodeeditor',
@@ -42,7 +40,7 @@ setup(
     package_data={'': ['qss/*']},
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/xiayoung/template',
+    url='https://github.com/XiaYoung/XYNodeEditor',
     version='0.9.0',
     zip_safe=False,
 )
