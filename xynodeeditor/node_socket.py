@@ -8,6 +8,7 @@ LEFT_BOTTOM = 2
 RIGHT_TOP = 3
 RIGHT_BOTTOM = 4
 
+DEBUG = False
 
 class Socket(Serializable):
     def __init__(self, node, index=0, position=LEFT_TOP, socket_type=1, multi_edges=True):
@@ -38,8 +39,11 @@ class Socket(Serializable):
     def removeEdge(self, edge):
         if edge in self.edges:
             self.edges.remove(edge)
+            if DEBUG:
+                print("!W:", "Socket::removeEdge", edge, "is removed!")
         else:
-            print("!W:", "Socket::removeEdge", edge, "is not in the list")
+            if DEBUG:
+                print("!W:", "Socket::removeEdge", edge, "is not in the list")
 
     def removeAllEdges(self):
         while self.edges:
@@ -48,6 +52,13 @@ class Socket(Serializable):
 
     # def hasEdge(self):
     #     return self.edges
+
+    def determineMultiEdges(self, data):
+        if 'multi_edges' in data:
+            return data['multi_edges']
+        else:
+            # probably older version of file, make Right socket multiedged by default
+            return data['position'] in [RIGHT_BOTTOM, RIGHT_TOP]
 
     def serialize(self):
         return OrderedDict([
@@ -61,7 +72,7 @@ class Socket(Serializable):
     def deserialize(self, data, hashmap={}, restore_id=True):
         if restore_id:
             self.id = data["id"]
-        self.is_multi_edges = data['multi_edges']
+        self.is_multi_edges = self.determineMultiEdges(data)
         hashmap[data['id']] = self
 
         return True

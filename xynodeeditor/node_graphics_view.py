@@ -31,6 +31,7 @@ class QDMGraphicsView(QGraphicsView):
 
         self.mode = MODE_NOOP
         self.editingFlag = False
+        self.rubberBandDraggingRectangle = False
 
         self.zoomInFactor = 1.25
         self.zoomClamp = False
@@ -127,6 +128,8 @@ class QDMGraphicsView(QGraphicsView):
                     super().mouseReleaseEvent(fakeEvent)
                     QApplication.setOverrideCursor(Qt.CrossCursor)
                     return
+                else:
+                    self.rubberBandDraggingRectangle = True
 
         super().mousePressEvent(event)
 
@@ -155,8 +158,9 @@ class QDMGraphicsView(QGraphicsView):
             self.mode = MODE_NOOP
             return
 
-        if self.dragMode() == QGraphicsView.RubberBandDrag:
+        if self.rubberBandDraggingRectangle:
             self.grScene.scene.history.storeHistory("Selection changed")
+            self.rubberBandDraggingRectangle = False
 
         super().mouseReleaseEvent(event)
 
@@ -277,7 +281,7 @@ class QDMGraphicsView(QGraphicsView):
             # check if start and end are same socket
             if item.socket == self.drag_edge.start_socket:
                 if DEBUG:
-                    print("View::edgeDragEnd ~  Start and End are same!")
+                    print("View::edgeDragEnd   ~  Start and End are same!")
                 return True
 
             # check if already have a same edge
@@ -285,29 +289,29 @@ class QDMGraphicsView(QGraphicsView):
             for edge in other_edges:
                 if edge.end_socket == item.socket:
                     if DEBUG:
-                        print("View::edgeDragEnd ~  already have a same edge")
+                        print("View::edgeDragEnd   ~  already have a same edge")
                     return True
 
             if not self.drag_edge.start_socket.is_multi_edges:
                 self.drag_edge.start_socket.removeAllEdges()
-
+                if DEBUG:
+                    print("View::edgeDragEnd   ~   remove edges from start socket:", self.drag_edge.start_socket)
             if not item.socket.is_multi_edges:
                 item.socket.removeAllEdges()
-
-            self.mode = MODE_NOOP
+                if DEBUG:
+                    print("View::edgeDragEnd   ~   remove edges from end socket:", item.socket)
             # self.drag_edge.end_socket = item.socket
             # self.drag_edge.end_socket.addEdge(self.drag_edge)
             # self.drag_edge.start_socket = self.drag_start_socket
             # self.drag_edge.start_socket.addEdge(self.drag_edg)
-
-            Edge(self.grScene.scene, self.drag_start_socket, item.socket, EDGE_TYPE_BEZIER)
+            self.drag_edge.remove()
+            new_edge = Edge(self.grScene.scene, self.drag_start_socket, item.socket, EDGE_TYPE_BEZIER)
             # self.drag_edge.updatePositions()
-
+            self.mode = MODE_NOOP
             if DEBUG:
-                print("View::edgeDragEnd ~  assign End socket to:", item.socket)
-                print("View::edgeDragEnd ~ End dargging edge")
+                print("View::edgeDragEnd   ~   created new edge:", new_edge, "connecting", new_edge.start_socket, "<-->", new_edge.end_socket)
+                print("View::edgeDragEnd   ~ End dargging edge")
             self.grScene.scene.history.storeHistory("Created new edge by dargging", setModified=True)
-
         else:
             self.mode = MODE_NOOP
             if DEBUG:

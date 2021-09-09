@@ -1,3 +1,5 @@
+import os
+
 from PySide2.QtGui import QBrush, QColor, QPen
 from PySide2.QtCore import QFile, Qt
 from PySide2.QtWidgets import QApplication, QGraphicsItem, QPushButton, QTextEdit, QVBoxLayout, QWidget
@@ -12,9 +14,7 @@ class NodeEditorWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.stylesheet_filename = 'xynodeeditor/qss/nodestyle.qss'
-        self.loadStylesheet(self.stylesheet_filename)
-
+        self.filename = None
         self.initUI()
 
     def initUI(self):
@@ -33,6 +33,17 @@ class NodeEditorWidget(QWidget):
         self.layout.addWidget(self.view)
 
         # self.addDebugContent()
+
+    def isModified(self):
+        return self.scene.has_been_modified
+
+    def isFilenameSet(self):
+        return self.filename is not None
+
+    def getUserFriendlyFilename(self):
+        name = os.path.basename(self.filename) if self.isFilenameSet() else "New Graph"
+        return name + ("*" if self.isModified() else "")
+
 
     def addNodes(self):
         node1 = Node(self.scene, "My new Nd",
@@ -80,10 +91,3 @@ class NodeEditorWidget(QWidget):
         line = self.grScene.addLine(-200, -100, 400, 200, outlinePen)
         line.setFlag(QGraphicsItem.ItemIsMovable)
         line.setFlag(QGraphicsItem.ItemIsSelectable)
-
-    def loadStylesheet(self, filename):
-        print('STYLE loading:', filename)
-        file = QFile(filename)
-        file.open(QFile.ReadOnly | QFile.Text)
-        stylesheet = file.readAll()
-        QApplication.instance().setStyleSheet(str(stylesheet, encoding='utf-8'))
